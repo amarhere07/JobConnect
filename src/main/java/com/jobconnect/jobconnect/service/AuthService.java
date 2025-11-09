@@ -26,7 +26,7 @@ public class AuthService {
                 .userName(request.getUserName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.CANDIDATE)
+                .role(Role.ADMIN)
                 .build();
 
         userRepository.save(user);
@@ -37,11 +37,14 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
-        User user = userRepository.findByEmail(request.getEmail());
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + request.getEmail()));
+
         String token = jwtService.generateToken(user.getEmail());
         return new AuthResponse(token);
     }
+
 }

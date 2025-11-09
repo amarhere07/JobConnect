@@ -29,8 +29,8 @@ public class AuthController {
     }
     
     @GetMapping("/home")
-    public ModelAndView getHome(HttpServletRequest request) {
-    	return new ModelAndView("home");
+    public String getHome(HttpServletRequest request) {
+    	return "home";
     }
 
     @PostMapping("/login")
