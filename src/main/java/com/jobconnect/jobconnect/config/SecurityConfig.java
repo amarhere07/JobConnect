@@ -4,6 +4,7 @@ import com.jobconnect.jobconnect.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -28,6 +29,7 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                		.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 	    .requestMatchers("/api/auth/**").permitAll()
                 	    .requestMatchers("/api/jobs/**", "/api/applications/**").authenticated()
                 	    .anyRequest().permitAll()

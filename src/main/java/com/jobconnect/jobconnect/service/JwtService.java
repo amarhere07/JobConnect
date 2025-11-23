@@ -2,9 +2,13 @@ package com.jobconnect.jobconnect.service;
 
 import java.security.Key; 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.stereotype.Service;
+
+import com.jobconnect.jobconnect.model.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -21,9 +25,13 @@ public class JwtService {
     }
 	
 	// Generate JWT token
-    public String generateToken(String username) {
+    public String generateToken(User user) {
+    	Map<String, Object> claims = new HashMap<>();
+        claims.put("role", user.getRole().name());
+    	
         return Jwts.builder()
-                .setSubject(username)
+        		.setClaims(claims)
+                .setSubject(user.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
@@ -32,6 +40,10 @@ public class JwtService {
 	
 	public String extractUserName(String token) {
 		return extractClaim(token, Claims::getSubject);
+	}
+	
+	public String extractRole(String token) {
+	    return extractClaim(token, claims -> claims.get("role", String.class));
 	}
 	
 	// Extract any claim

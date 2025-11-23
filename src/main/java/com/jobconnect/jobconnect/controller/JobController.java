@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/jobs")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173") // update to your frontend URL
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"})
 public class JobController {
 
     private final JobService jobService;
@@ -58,7 +58,7 @@ public class JobController {
      * We set postedByEmail from authenticated principal (authentication.getName()).
      */
     @PostMapping("/create-job")
-    @PreAuthorize("hasAuthority('ADMIN')") // requires method security enabled (you already have @EnableMethodSecurity)
+    @PreAuthorize("hasAuthority('EMPLOYER')") // requires method security enabled (you already have @EnableMethodSecurity)
     public ResponseEntity<Job> createJob(@RequestBody JobDto dto, Authentication authentication) {
         String email = authentication.getName();
         Job job = Job.builder()

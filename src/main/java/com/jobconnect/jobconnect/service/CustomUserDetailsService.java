@@ -3,6 +3,8 @@ package com.jobconnect.jobconnect.service;
 import com.jobconnect.jobconnect.model.User;
 import com.jobconnect.jobconnect.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
                 .password(user.getPassword())
-                .roles(user.getRole().name())
+                .authorities(new SimpleGrantedAuthority(user.getRole().name()))
                 .build();
     }
 

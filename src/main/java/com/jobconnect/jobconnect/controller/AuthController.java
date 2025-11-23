@@ -25,6 +25,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
+    	System.out.print(request);
         return ResponseEntity.ok(authService.register(request));
     }
     
@@ -35,6 +36,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    	System.out.print(request);
         return ResponseEntity.ok(authService.login(request));
     }
 }
