@@ -34,6 +34,7 @@ public class JobController {
     // get single job
     @GetMapping("/{id}")
     public ResponseEntity<?> getJobById(@PathVariable String id) {
+    	System.out.print(id);
         Optional<Job> job = jobService.getJobById(id);
         return job.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -121,9 +122,10 @@ public class JobController {
     }
 
     // get jobs posted by authenticated employer
-    @GetMapping("/my")
-    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/employer/all")
+    @PreAuthorize("hasAuthority('EMPLOYER')")
     public ResponseEntity<List<Job>> getMyJobs(Authentication authentication) {
+    	System.out.print("inside the getMyJobs");
         String email = authentication.getName();
         return ResponseEntity.ok(jobService.getJobsByEmployerEmail(email));
     }

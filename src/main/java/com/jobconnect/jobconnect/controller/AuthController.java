@@ -29,11 +29,6 @@ public class AuthController {
         return ResponseEntity.ok(authService.register(request));
     }
     
-    @GetMapping("/home")
-    public String getHome(HttpServletRequest request) {
-    	return "home";
-    }
-
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
     	System.out.print(request);

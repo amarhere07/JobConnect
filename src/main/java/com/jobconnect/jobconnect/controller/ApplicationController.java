@@ -2,6 +2,7 @@ package com.jobconnect.jobconnect.controller;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.jobconnect.jobconnect.model.Application;
@@ -17,8 +18,12 @@ public class ApplicationController {
 
     private final ApplicationService applicationService;
 
-    @PostMapping("/apply")
-    public Application applyJob(@RequestBody Application application) {
+    @PostMapping("/apply/{jobId}")
+    public Application applyJob(@PathVariable String jobId, 
+    		Authentication authentication) {
+    	System.out.print("inside apply job ");
+    	String email = authentication.getName();
+    	Application application = Application.builder().jobId(jobId).userId(email).status("APPLIED").build();
         return applicationService.applyJob(application);
     }
 
